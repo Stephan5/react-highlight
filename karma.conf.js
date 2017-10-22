@@ -27,21 +27,33 @@ module.exports = function(config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-        'test/**/*.js': ['webpack'],
+      'test/**/*.js': ['webpack'],
     },
 
     webpack: {
-        module: {
-            loaders: [
-                {test: /\.(js|jsx)$/, loaders: ['babel']},
-            ]
-        },
-        externals: {
-            react: 'React'
-        },
-        resolve: {
-          root: __dirname
-        }
+      module: {
+        rules: [
+          {
+            test: /\.(js|jsx)$/,
+            use: {
+              loader: 'babel-loader',
+              options: {
+                presets: ['env'],
+                plugins: [
+                  'transform-class-properties',
+                  'transform-react-jsx',
+                ],
+              },
+            },
+          },
+        ],
+      },
+      externals: {
+        react: 'React'
+      },
+      resolve: {
+        modules: [__dirname, 'node_modules']
+      }
     },
     webpackServer: {
       quiet: true,
